@@ -4,26 +4,29 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 /**
  * Created by sanjeev on 13/07/17.
  */
-public class ParkingLotOwnerTest {
+public class ParkingLotSecurityTest {
 
-    ParkingLotGeneralListener parkingLotOwner = new ParkingLotGeneralListener();
+    ParkingLotSecurity security = new ParkingLotSecurity();
+
     ParkingLot parkingLot = new ParkingLot(5);
 
     @Before
     public void setup() {
-        parkingLot.subscribeParkingLotEvents(parkingLotOwner);
+        parkingLot.subscribeParkingLotEvents(security);
     }
 
     @Test
-    public void shouldNotifyParkingLotOwnerWhenParkinLotIsFull(){
+    public void shouldNotifyParkingLotOwnerWhenParkinLotIsFull() {
         parkingLot.accept(new Car());
         parkingLot.accept(new Car());
         parkingLot.accept(new Car());
         parkingLot.accept(new Car());
         parkingLot.accept(new Car());
-        Assert.assertTrue(parkingLotOwner.isParkingLotFull());
+        Assert.assertTrue(security.isSecurityRedirected());
     }
 }

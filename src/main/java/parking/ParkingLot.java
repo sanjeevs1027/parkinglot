@@ -1,4 +1,5 @@
 package parking;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,17 +9,17 @@ import java.util.Set;
 public class ParkingLot {
     private final int size;
     private final Set<Car> parkedCars;
-    private ParkingLotEventListener parkingLotEventListener;
+    private Set<ParkingLotEventListener> parkingLotEventListeners;
     private boolean capaCityReached = false;
 
     public ParkingLot(int size) {
-        parkedCars =  new HashSet<Car>();
+        parkedCars = new HashSet<Car>();
+        this.parkingLotEventListeners = new HashSet<ParkingLotEventListener>();
         this.size = size;
     }
 
     public void subscribeParkingLotEvents(ParkingLotEventListener parkingLotEventListener) {
-        this.parkingLotEventListener = parkingLotEventListener;
-        //TODO Make it a multi subscriber
+        this.parkingLotEventListeners.add(parkingLotEventListener);
     }
 
     public boolean accept(Car car) {
@@ -26,25 +27,22 @@ public class ParkingLot {
             return false;
         boolean result = parkedCars.add(car);
         assertCapacity();
-        return  result;
+        return result;
     }
 
     public boolean release(Car car) {
         boolean result = parkedCars.remove(car);
         assertCapacity();
-        return  result;
+        return result;
     }
 
     private void assertCapacity() {
-        if(isFull()){
-            if(parkingLotEventListener != null) {
-                parkingLotEventListener.notifyParkingLotIsFull();
-            }
+        if (isFull()) {
+                parkingLotEventListeners.stream().forEach(e -> e.notifyParkingLotIsFull());
             capaCityReached = true;
-        }
-        else if(capaCityReached) {
-            if(parkingLotEventListener != null) {
-                parkingLotEventListener.notifyParkingLotIsAvailable();
+        } else if (capaCityReached) {
+            if (parkingLotEventListeners != null) {
+                parkingLotEventListeners.stream().forEach(e -> e.notifyParkingLotIsAvailable());
             }
             capaCityReached = false;
         }
@@ -55,6 +53,6 @@ public class ParkingLot {
     }
 
     public boolean isFull() {
-        return (parkedCars.size()==size);
+        return (parkedCars.size() == size);
     }
 }
