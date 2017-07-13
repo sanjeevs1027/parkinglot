@@ -3,7 +3,7 @@ package parking;
 /**
  * Created by sanjeev on 13/07/17.
  */
-public class ParkingLotOwner {
+public class ParkingLotOwner implements  ParkingLotEventListener{
     private boolean parkingLotAvailable;
 
     public boolean isParkingLotFull() {

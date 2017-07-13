@@ -8,12 +8,13 @@ import java.util.Set;
 public class ParkingLot {
     private final int size;
     private final Set<Car> parkedCars;
-    private ParkingLotOwner parkingLotOwner;
+    private ParkingLotEventListener parkingLotEventListener;
+    private boolean capaCityReached = false;
 
-    public ParkingLot(int size, ParkingLotOwner parkingLotOwner) {
+    public ParkingLot(int size, ParkingLotEventListener parkingLotEventListener) {
         parkedCars =  new HashSet<Car>();
         this.size = size;
-        this.parkingLotOwner = parkingLotOwner;
+        this.parkingLotEventListener = parkingLotEventListener;
     }
 
     public boolean accept(Car car) {
@@ -32,11 +33,12 @@ public class ParkingLot {
 
     private void assertCapacity() {
         if(isFull()){
-            parkingLotOwner.notifyParkingLotIsFull();
+            parkingLotEventListener.notifyParkingLotIsFull();
+            capaCityReached = true;
         }
-        else{
-            //TODO is available notification should be done only when it is changing to full to available
-            parkingLotOwner.notifyParkingLotIsAvailable();
+        else if(capaCityReached) {
+            parkingLotEventListener.notifyParkingLotIsAvailable();
+            capaCityReached = false;
         }
     }
 
