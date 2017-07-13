@@ -8,21 +8,36 @@ import java.util.Set;
 public class ParkingLot {
     private final int size;
     private final Set<Car> parkedCars;
+    private ParkingLotOwner parkingLotOwner;
 
-    public ParkingLot(int size) {
+    public ParkingLot(int size, ParkingLotOwner parkingLotOwner) {
         parkedCars =  new HashSet<Car>();
         this.size = size;
+        this.parkingLotOwner = parkingLotOwner;
     }
 
     public boolean accept(Car car) {
         if (isFull())
             return false;
-
-        return parkedCars.add(car);
+        boolean result = parkedCars.add(car);
+        assertCapacity();
+        return  result;
     }
 
     public boolean release(Car car) {
-        return parkedCars.remove(car);
+        boolean result = parkedCars.remove(car);
+        assertCapacity();
+        return  result;
+    }
+
+    private void assertCapacity() {
+        if(isFull()){
+            parkingLotOwner.notifyParkingLotIsFull();
+        }
+        else{
+            //TODO is available notification should be done only when it is changing to full to available
+            parkingLotOwner.notifyParkingLotIsAvailable();
+        }
     }
 
     public boolean isCarParked(Car car) {

@@ -8,8 +8,9 @@ import org.junit.Test;
  */
 public class DriverTest
 {
+    ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
     Car car = new Car();
-    ParkingLot parkingLot = new ParkingLot(5);
+    ParkingLot parkingLot = new ParkingLot(5, parkingLotOwner);
     Driver driver = new Driver(car);
 
     @Test
