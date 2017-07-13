@@ -1,4 +1,4 @@
-package parking.lot;
+package parking;
 
 /**
  * Created by sanjeev on 13/07/17.
