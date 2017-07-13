@@ -11,10 +11,14 @@ public class ParkingLot {
     private ParkingLotEventListener parkingLotEventListener;
     private boolean capaCityReached = false;
 
-    public ParkingLot(int size, ParkingLotEventListener parkingLotEventListener) {
+    public ParkingLot(int size) {
         parkedCars =  new HashSet<Car>();
         this.size = size;
+    }
+
+    public void subscribeParkingLotEvents(ParkingLotEventListener parkingLotEventListener) {
         this.parkingLotEventListener = parkingLotEventListener;
+        //TODO Make it a multi subscriber
     }
 
     public boolean accept(Car car) {
@@ -33,11 +37,15 @@ public class ParkingLot {
 
     private void assertCapacity() {
         if(isFull()){
-            parkingLotEventListener.notifyParkingLotIsFull();
+            if(parkingLotEventListener != null) {
+                parkingLotEventListener.notifyParkingLotIsFull();
+            }
             capaCityReached = true;
         }
         else if(capaCityReached) {
-            parkingLotEventListener.notifyParkingLotIsAvailable();
+            if(parkingLotEventListener != null) {
+                parkingLotEventListener.notifyParkingLotIsAvailable();
+            }
             capaCityReached = false;
         }
     }

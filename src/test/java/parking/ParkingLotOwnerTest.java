@@ -1,6 +1,7 @@
 package parking;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -9,7 +10,12 @@ import org.junit.Test;
 public class ParkingLotOwnerTest {
 
     ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
-    ParkingLot parkingLot = new ParkingLot(5, parkingLotOwner);
+    ParkingLot parkingLot = new ParkingLot(5);
+
+    @Before
+    public void setup() {
+        parkingLot.subscribeParkingLotEvents(parkingLotOwner);
+    }
 
     @Test
     public void shouldNotifyParkingLotOwnerWhenParkinLotIsFull(){

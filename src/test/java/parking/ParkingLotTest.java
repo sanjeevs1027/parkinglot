@@ -9,8 +9,7 @@ import org.junit.Test;
 public class ParkingLotTest {
 
     Car car = new Car();
-    ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
-    ParkingLot parkingLot = new ParkingLot(5, parkingLotOwner);
+    ParkingLot parkingLot = new ParkingLot(5);
 
     @Test
     public void shouldAcceptTheCar() {
